@@ -14,6 +14,7 @@ from conversations.account import account_handler
 
 import config
 import db.database as database
+from error import error_handler
 
 def setup_logging():
     logging.basicConfig(
@@ -34,6 +35,7 @@ def setup_app():
             account_handler
         ]
     )
+    app.add_error_handler(error_handler)
     return app
 
 if __name__ == '__main__':
