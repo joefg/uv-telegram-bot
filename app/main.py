@@ -7,6 +7,7 @@ from telegram.ext import (
 import logging
 
 from commands.ping import ping_cmd 
+from commands.start import start_cmd
 import config
 import db.database as database
 
@@ -20,6 +21,7 @@ def setup_logging():
 
 def setup_app():
     app = Application.builder().token(config.TG_TOKEN).build()
+    app.add_handler(CommandHandler("start", start_cmd))
     app.add_handler(CommandHandler("ping", ping_cmd))
     return app
 
