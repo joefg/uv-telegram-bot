@@ -1,7 +1,7 @@
 from telegram import Update
 from telegram.ext import ContextTypes
 
-from auth import only_user
+from auth.chat import only_user
 import config
 from models import ping as ping_model
 
