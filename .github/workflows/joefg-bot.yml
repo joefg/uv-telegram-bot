@@ -11,7 +11,7 @@ permissions:
 
 jobs:
   build-and-test:
-    name: uv-fasthtml
+    name: build-and-test
     runs-on: ubuntu-latest
 
     steps:
