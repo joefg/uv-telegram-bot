@@ -10,6 +10,8 @@ from commands.help import help_handler
 from commands.ping import ping_handler
 from commands.start import start_handler
 
+from conversations.account import account_handler
+
 import config
 import db.database as database
 
@@ -28,7 +30,8 @@ def setup_app():
         [
             help_handler,
             start_handler,
-            ping_handler
+            ping_handler,
+            account_handler
         ]
     )
     return app
