@@ -6,9 +6,9 @@ from telegram.ext import (
 
 import logging
 
-from commands.help import help_cmd
-from commands.ping import ping_cmd 
-from commands.start import start_cmd
+from commands.help import help_handler
+from commands.ping import ping_handler
+from commands.start import start_handler
 
 import config
 import db.database as database
@@ -26,9 +26,9 @@ def setup_app():
     app = Application.builder().token(config.TG_TOKEN).build()
     app.add_handlers(
         [
-            CommandHandler("help", help_cmd),
-            CommandHandler("start", start_cmd),
-            CommandHandler("ping", ping_cmd),
+            help_handler,
+            start_handler,
+            ping_handler
         ]
     )
     return app
