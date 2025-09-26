@@ -28,5 +28,8 @@ jobs:
       - name: "Install dependencies"
         run: ./run restore
 
+      - name: "Running linting"
+        run: ./run lint
+
       - name: "Run unit tests"
         run: ./run unit

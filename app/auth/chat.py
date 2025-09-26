@@ -1,5 +1,6 @@
 from functools import wraps
 
+
 def only_chat(chat_id):
     def decorator(func):
         @wraps(func)
@@ -8,8 +9,11 @@ def only_chat(chat_id):
                 return await func(update, context, *args, **kwargs)
             else:
                 await update.message.reply_text("Access denied, ask an admin.")
+
         return wrapper
+
     return decorator
+
 
 def only_user(user_id):
     def decorator(func):
@@ -19,5 +23,7 @@ def only_user(user_id):
                 return await func(update, context, *args, **kwargs)
             else:
                 await update.message.reply_text("Access denied, ask an admin.")
+
         return wrapper
+
     return decorator

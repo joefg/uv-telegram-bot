@@ -24,3 +24,8 @@ defineConstant = { DEBUG = true }
 reportMissingImports = "error"
 reportMissingTypeStubs = false
 venvPath = ".venv"
+
+[dependency-groups]
+dev = [
+    "ruff>=0.13.2",
+]

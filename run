@@ -10,6 +10,7 @@ joefg-bot
 help        : Display help text
 restore     : Fetch dependencies
 serve       : Spawn a bot
+lint        : Run linting
 unit        : Run unit tests
 EOF
 }
@@ -20,6 +21,10 @@ function run_restore(){
 
 function run_serve(){
 	uv run app/main.py
+}
+
+function run_lint(){
+	uv run ruff check
 }
 
 function run_unit(){
@@ -38,6 +43,9 @@ function main(){
 			;;
 		serve)
 			run_serve
+			;;
+		lint)
+			run_lint
 			;;
 		unit)
 			run_unit
