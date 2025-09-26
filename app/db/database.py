@@ -6,6 +6,7 @@ from contextlib import contextmanager
 
 import config
 
+
 class Database:
     def __init__(self, path="database/database.sqlite3"):
         self.db_path = config.DB_PATH or path
@@ -13,9 +14,9 @@ class Database:
 
     def _init_db(self):
         with self.connect() as connection:
-            connection.execute('pragma journal_mode=wal')
+            connection.execute("pragma journal_mode=wal")
             cursor = connection.cursor()
-            cursor.executescript('''
+            cursor.executescript("""
                 -- Create migrations history table.
                 create table if not exists migrations (
                     id integer primary key autoincrement,
@@ -32,25 +33,27 @@ class Database:
                     from migrations
                     where script = 'init'
                 );
-            '''
-            )
+            """)
             connection.commit()
 
     def _add_migration(self, migration):
         logging.info(f"Adding {migration}...")
         migration_script = None
-        with open(migration, 'r') as f:
+        with open(migration, "r") as f:
             migration_script = f.read()
 
         with self.connect() as connection:
             cursor = connection.cursor()
             cursor.executescript(migration_script)
-            cursor.execute('''
+            cursor.execute(
+                """
                 insert into migrations (script)
                 values (
                     :migration
                 );
-            ''', (migration,))
+            """,
+                (migration,),
+            )
             connection.commit()
             logging.info(f"{migration} added successfully.")
 
@@ -58,14 +61,14 @@ class Database:
         migrated = ()
         with self.connect() as connection:
             cursor = connection.cursor()
-            cursor.execute('''
+            cursor.execute("""
                 select id, script, executed_at
                 from migrations
                 order by executed_at;
-            ''')
-            migrated = set([row['script'] for row in cursor.fetchall()])
+            """)
+            migrated = set([row["script"] for row in cursor.fetchall()])
 
-        migrations = sorted(glob.glob('app/db/migrations/*.sql'))
+        migrations = sorted(glob.glob("app/db/migrations/*.sql"))
         for migration in migrations:
             if migration not in migrated:
                 self._add_migration(migration)
@@ -73,7 +76,8 @@ class Database:
     @contextmanager
     def connect(self):
         db_dir = os.path.dirname(self.db_path)
-        if db_dir: os.makedirs(db_dir, exist_ok=True)
+        if db_dir:
+            os.makedirs(db_dir, exist_ok=True)
 
         connection = sqlite3.connect(self.db_path, isolation_level=None)
         connection.row_factory = sqlite3.Row
@@ -82,5 +86,6 @@ class Database:
             yield connection
         finally:
             connection.close()
+
 
 db = Database()
