@@ -60,6 +60,43 @@ def get_user(telegram_id: int) -> Optional[User]:
         ret = cursor.fetchone()
     return ret
 
+def delete_user(user_id: int) -> None:
+    with db.connect() as connection:
+        cursor = connection.cursor()
+        sql = '''
+            delete from users
+            where users.id = :user_id;
+        '''
+        params = {
+            'user_id': user_id
+        }
+        cursor.execute(sql, params)
+        connection.commit()
+
+def update_user(user_id: int, first_name: Optional[str], last_name: Optional[str]):
+    def build_sql(first_name, last_name):
+        sql = ''
+        if first_name:
+            sql += "first_name = :first_name" + (", " if last_name else "")
+        if last_name: sql += "last_name = :last_name"
+        return sql
+
+    with db.connect() as connection:
+        cursor = connection.cursor()
+        columns = build_sql(first_name, last_name)
+        sql = f'''
+            update users
+            set {columns}
+            where id = :user_id;
+        '''
+        params = {
+            'user_id': user_id,
+            'first_name': first_name,
+            'last_name': last_name
+        }
+        cursor.execute(sql, params)
+        connection.commit()
+
 def set_user_admin(user_id: int, change_to: bool) -> None:
      with db.connect() as connection:
         cursor = connection.cursor()

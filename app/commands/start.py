@@ -1,5 +1,5 @@
 from telegram import Update
-from telegram.ext import ContextTypes
+from telegram.ext import CommandHandler, ContextTypes
 
 from models import user as user_model
 
@@ -37,3 +37,5 @@ async def start_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
     else:
         new_user = register_and_get_user(user_id, first_name, last_name)
         await update.message.reply_html(new_user_message(new_user))
+
+start_handler = CommandHandler("start", start_cmd)
