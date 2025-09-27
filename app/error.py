@@ -13,7 +13,7 @@ import config
 async def error_handler(update: object, context: ContextTypes.DEFAULT_TYPE):
     logging.error("Exception while handling an update:", exc_info=context.error)
 
-    if config.DEV_CHAT:
+    if config.DEV_CHAT and context.error:
         tb_list = traceback.format_exception(
             None, context.error, context.error.__traceback__
         )
