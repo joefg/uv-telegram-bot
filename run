@@ -21,7 +21,7 @@ function run_restore(){
 }
 
 function run_serve(){
-	uv run app/main.py
+	uv run "$THISDIR/app/main.py"
 }
 
 function run_lint(){
