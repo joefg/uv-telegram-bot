@@ -18,7 +18,8 @@ async def menu_account_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 Please select an option using the buttons.
 """
-    await update.message.reply_html(MENU_MSG, reply_markup=ReplyKeyboardMarkup(BUTTONS))
+    if update.message:
+        await update.message.reply_html(MENU_MSG, reply_markup=ReplyKeyboardMarkup(BUTTONS))
     return MENU
 
 
@@ -37,11 +38,11 @@ Created on: {user.creation_date}
 {"Account active" if user.is_active else "Account inactive"}
 {"<strong>This user is an administrator</strong>" if user.is_admin else ""}
  """
-
-    user_id = update.message.from_user.id
-    user = user_model.get_user(user_id)
-    if user:
-        await update.message.reply_html(account_details(user))
+    if update.message and update.message.from_user:
+        user_id = update.message.from_user.id
+        user = user_model.get_user(user_id)
+        if user:
+            await update.message.reply_html(account_details(user))
     return MENU
 
 
@@ -55,14 +56,15 @@ associated with your Telegram account.
     if not update.message:
         raise Exception("No message")
 
-    user_id = update.message.from_user.id
-    first_name = update.message.from_user.first_name
-    last_name = update.message.from_user.last_name or ""
+    if update.message and update.message.from_user:
+        user_id = update.message.from_user.id
+        first_name = update.message.from_user.first_name
+        last_name = update.message.from_user.last_name or ""
 
-    user = user_model.get_user(user_id)
-    if user:
-        user_model.update_user(user.id, first_name, last_name)
-        await update.message.reply_html(UPDATE_USER_MSG)
+        user = user_model.get_user(user_id)
+        if user:
+            user_model.update_user(user.id, first_name, last_name)
+            await update.message.reply_html(UPDATE_USER_MSG)
     return MENU
 
 
@@ -76,12 +78,13 @@ Thank you for using this bot!
     if not update.message:
         raise Exception("No message")
 
-    user_id = update.message.from_user.id
-    user = user_model.get_user(user_id)
+    if update.message and update.message.from_user:
+        user_id = update.message.from_user.id
+        user = user_model.get_user(user_id)
 
-    if user:
-        user_model.delete_user(user.id)
-        await update.message.reply_html(DELETE_USER_MSG)
+        if user:
+            user_model.delete_user(user.id)
+            await update.message.reply_html(DELETE_USER_MSG)
     return ConversationHandler.END
 
 
@@ -92,9 +95,10 @@ async def confirm_delete_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE)
 Please select your choice via the keyboard buttons.
     """
     BUTTONS = [["Yes", "No"]]
-    await update.message.reply_html(
-        CONFIRM_USER_MSG, reply_markup=ReplyKeyboardMarkup(BUTTONS)
-    )
+    if update.message:
+        await update.message.reply_html(
+            CONFIRM_USER_MSG, reply_markup=ReplyKeyboardMarkup(BUTTONS)
+        )
     return CONFIRM_DELETE
 
 
@@ -102,9 +106,10 @@ async def no_delete_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
     NO_DELETE_USER_MSG = """
 <strong>Account not deleted.</strong>
     """
-    await update.message.reply_html(
-        NO_DELETE_USER_MSG, reply_markup=ReplyKeyboardMarkup(BUTTONS)
-    )
+    if update.message:
+        await update.message.reply_html(
+            NO_DELETE_USER_MSG, reply_markup=ReplyKeyboardMarkup(BUTTONS)
+        )
     return MENU
 
 
@@ -112,7 +117,8 @@ async def done_cmd(update: Update, context: ContextTypes.DEFAULT_TYPE):
     DONE_USER_CMD = """
 <strong>Done.</strong>
     """
-    await update.message.reply_html(DONE_USER_CMD, reply_markup=ReplyKeyboardRemove())
+    if update.message:
+        await update.message.reply_html(DONE_USER_CMD, reply_markup=ReplyKeyboardRemove())
     return ConversationHandler.END
 
 

@@ -28,8 +28,11 @@ jobs:
       - name: "Install dependencies"
         run: ./run restore
 
-      - name: "Running linting"
+      - name: "Run linting"
         run: ./run lint
+
+      - name: "Run type checking"
+        run: ./run type
 
       - name: "Run unit tests"
         run: ./run unit

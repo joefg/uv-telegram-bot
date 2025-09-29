@@ -25,7 +25,11 @@ reportMissingImports = "error"
 reportMissingTypeStubs = false
 venvPath = ".venv"
 
+[tool.ruff.lint]
+ignore = ["E701"]
+
 [dependency-groups]
 dev = [
+    "mypy>=1.18.2",
     "ruff>=0.13.2",
 ]
