@@ -1,6 +1,7 @@
-# joefg-bot
+# uv-telegram-bot
 
-My personal [Telegram bot](https://core.telegram.org/bots).
+My personal [Telegram bot](https://core.telegram.org/bots)
+template. Uses uv, Python, and SQLite as a data store.
 
 ## How to set up
 
