@@ -18,9 +18,12 @@ EOF
 
 function run_restore(){
 	uv sync
+	(test -f ./database/database.sqlite3 || uv run fastmigrate_create_db)
+	uv run fastmigrate_run_migrations
 }
 
 function run_serve(){
+	uv run fastmigrate_run_migrations
 	uv run "$THISDIR/app/main.py"
 }
 

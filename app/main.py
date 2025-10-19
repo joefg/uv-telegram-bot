@@ -12,7 +12,6 @@ from commands.start import start_handler
 from conversations.account import account_handler
 
 import config
-import db.database as database
 from error import error_handler
 
 
@@ -35,6 +34,5 @@ def setup_app():
 
 if __name__ == "__main__":
     logger = setup_logging()
-    database.db.migrate()
     app = setup_app()
     app.run_polling(allowed_updates=Update.ALL_TYPES)
